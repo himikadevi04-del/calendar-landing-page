@@ -2,27 +2,20 @@
 import React, { useState } from 'react';
 
 export default function LandingPage() {
-  // These variables make the website "dynamic" by tracking user input
   const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // This function handles what happens when they click "Send"
-  const handleContactSubmit = (e) => {
-    e.preventDefault(); // Stops the page from refreshing
-    
-    // We will connect this to your backend later. For now, it shows a success message!
+  // FIXED: Added React.FormEvent here
+  const handleContactSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); 
     console.log("Captured Data:", contactForm);
-    
     setIsSubmitted(true);
-    setContactForm({ name: '', email: '', message: '' }); // Clears the form
-    
-    // Hides the success message after 4 seconds
+    setContactForm({ name: '', email: '', message: '' }); 
     setTimeout(() => setIsSubmitted(false), 4000); 
   };
 
   return (
     <div className="min-h-screen bg-slate-900 text-white font-sans">
-      {/* Hero Section */}
       <header className="max-w-5xl mx-auto px-6 py-24 text-center">
         <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6">
           Never Miss a Meeting. <br/>
@@ -36,7 +29,6 @@ export default function LandingPage() {
         </button>
       </header>
 
-      {/* Features Section */}
       <section className="bg-slate-800 py-20">
         <div className="max-w-5xl mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-16">The Executive Assistant You Can Actually Afford</h2>
@@ -60,7 +52,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* NEW Dynamic Contact Section */}
       <section className="max-w-3xl mx-auto px-6 py-20">
         <h2 className="text-3xl font-bold text-center mb-8">Have questions? Contact Us.</h2>
         
@@ -70,7 +61,8 @@ export default function LandingPage() {
             placeholder="Your Name" 
             required
             value={contactForm.name}
-            onChange={(e) => setContactForm({...contactForm, name: e.target.value})}
+            // FIXED: Added React.ChangeEvent here
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setContactForm({...contactForm, name: e.target.value})}
             className="w-full px-4 py-3 rounded-lg bg-slate-900 border border-slate-700 focus:outline-none focus:border-blue-500 text-white"
           />
           <input 
@@ -78,15 +70,17 @@ export default function LandingPage() {
             placeholder="Your Email Address" 
             required
             value={contactForm.email}
-            onChange={(e) => setContactForm({...contactForm, email: e.target.value})}
+            // FIXED: Added React.ChangeEvent here
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setContactForm({...contactForm, email: e.target.value})}
             className="w-full px-4 py-3 rounded-lg bg-slate-900 border border-slate-700 focus:outline-none focus:border-blue-500 text-white"
           />
           <textarea 
             placeholder="How can we help?" 
-            rows="4"
+            rows={4} // FIXED: Using curly braces for numbers
             required
             value={contactForm.message}
-            onChange={(e) => setContactForm({...contactForm, message: e.target.value})}
+            // FIXED: Added React.ChangeEvent for textarea here
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setContactForm({...contactForm, message: e.target.value})}
             className="w-full px-4 py-3 rounded-lg bg-slate-900 border border-slate-700 focus:outline-none focus:border-blue-500 text-white"
           ></textarea>
           
@@ -94,7 +88,6 @@ export default function LandingPage() {
             Send Message
           </button>
 
-          {/* This success message dynamically appears only AFTER they click send */}
           {isSubmitted && (
             <div className="text-green-400 text-center font-bold mt-2">
               Message sent successfully! We will be in touch soon.
